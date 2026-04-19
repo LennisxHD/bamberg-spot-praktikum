@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bamberg Spot - Start</title>
+
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* Karte */
+        #map {
+            width: 100vw;
+            height: 100vh;
+            filter: brightness(0.60);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Titel links unten */
+        .overlay-title {
+            position: absolute;
+            left: 50px;
+            bottom: 160px;
+            color: white;
+            z-index: 10;
+            text-shadow: 0 0 12px rgba(0,0,0,0.8);
+        }
+        .overlay-title h1 { font-size: 65px; margin: 0;font-weight: 800;}
+        .overlay-title h2 { font-size: 26px;margin: 10px 0 0 0;font-weight: 400;opacity: 0.9;}
+
+        /* Button unter Titel */
+        .enter-btn {
+            position: absolute;
+            left: 50px;
+            bottom: 60px;
+            padding: 14px 30px;
+            background: white;
+            color: #1a3ae0;
+            border-radius: 14px;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.25s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+        .enter-btn:hover {transform: scale(1.07);background: #eaeaea;}
+
+        /* Icon-Bar */
+        .icon-bar {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 16px;
+            z-index: 20;
+        }
+        .icon-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .icon-btn:hover {transform: scale(1.15);}
+        .red { background: #e63946; }
+        .green { background: #2ecc71; }
+        .yellow { background: #f1c40f; }
+        .pink { background: #e056fd; }
+        .blue { background: #3498db; }
+
+        /* Übergang unten */
+        .blur-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(255,255,255,0.85));
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* BEAUTIFUL BOTTOM SHEET */
+        .sheet {
+            width: 100%;
+            background: #f7f7f7;
+            padding: 35px 26px 80px 26px;
+            border-top-left-radius: 34px;
+            border-top-right-radius: 34px;
+            box-shadow: 0 -12px 25px rgba(0,0,0,0.15);
+            position: relative;
+            top: 0;
+            z-index: 5;
+        }
+
+        .sheet-handle {
+            width: 70px;
+            height: 6px;
+            background: rgba(120,120,120,0.35);
+            border-radius: 20px;
+            margin: 0 auto 20px auto;
+        }
+
+        .sheet h2 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a1a1d;
+        }
+
+        .intro {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #444;
+            line-height: 1.55;
+        }
+
+        .card {
+            margin-top: 26px;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+            transition: transform 0.25s ease;
+        }
+        .card:hover { transform: translateY(-4px); }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 18px 20px;
+        }
+
+        .card-content h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #222;
+        }
+
+        .card-content p {
+            margin-top: 6px;
+            font-size: 15px;
+            color: #555;
+            line-height: 1.45;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <!-- Hintergrund-Karte -->
+    <div id="map"></div>
+
+    <!-- Titel -->
+    <div class="overlay-title">
+        <h1>Bamberg Spot</h1>
+        <h2>Die interaktive Stadtkarte.</h2>
+        <p style="font-size:17px; opacity:0.85;">Mit zahlreichen Orten, Tipps und Highlights aus ganz Bamberg.</p>
+    </div>
+
+    <!-- Button -->
+    <a href="index.html" class="enter-btn">➡ Zur interaktiven Karte</a>
+
+    <!-- Icons oben rechts -->
+    <div class="icon-bar">
+        <div class="icon-btn red" onclick="toggleLayer('s')">🏛️</div>
+        <div class="icon-btn green" onclick="toggleLayer('e')">🍺</div>
+        <div class="icon-btn yellow" onclick="toggleLayer('sh')">🛍️</div>
+        <div class="icon-btn pink" onclick="toggleLayer('n')">📸</div>
+        <div class="icon-btn blue" onclick="toggleLayer('m')">🖼️</div>
+    </div>
+
+    <!-- Soft transition -->
+    <div class="blur-overlay"></div>
+
+    <!-- BEAUTIFUL NEW SHEET -->
+    <div id="sheet" class="sheet">
+
+        <div class="sheet-handle"></div>
+
+        <h2>Entdecke Bamberg auf deine Art</h2>
+        <p class="intro">
+            Egal ob Kultur, Natur, gemütliche Plätze oder Fotospots – hier findest du Inspiration für deinen nächsten Schritt in Bamberg.
+        </p>
+
+
+<a href="kategorie-sehenswuerdigkeiten.html" class="card">
+    <img src="https://images.unsplash.com/photo-1705475461233-35e320ba4d53?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="card-content">
+        <h3>🏛️ Kultur & Architektur</h3>
+        <p>Historische Gassen, beeindruckende Bauwerke und besondere Sehenswürdigkeiten.</p>
+    </div>
+</a>
+
+
+
+<a href="kategorie-natur.html" class="card">
+    <img src="https://images.unsplash.com/photo-1765309347307-420fa56b643a?q=80&w=1190&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="card-content">
+        <h3>🌿 Natur & Ruheorte</h3>
+        <p>Grünflächen, Wege entlang der Regnitz & Orte zum Entspannen.</p>
+    </div>
+</a>
+
+
+<a href="kategorie-essen.html" class="card">
+    <img src="https://images.unsplash.com/photo-1767556247136-503770c2518f?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="card-content">
+        <h3>☕ Cafés & Genuss</h3>
+        <p>Cafés, Biergärten und gemütliche Plätze.</p>
+    </div>
+</a>
+
+<a href="kategorie-shops.html" class="card">
+    <img src="https://images.unsplash.com/photo-1593027530495-9895a2499605?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="card-content">
+        <h3>🎓 Praktische Orientierung</h3>
+        <p>Shops, Treffpunkte & Orte für den Alltag.</p>
+    </div>
+</a>
+
+<a href="kategorie-aussicht.html" class="card">
+    <img src="https://images.unsplash.com/photo-1604559494757-7b20f591204d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="card-content">
+        <h3>📸 Fotospots</h3>
+        <p>Die schönsten Perspektiven und Aussichtspunkte der Stadt.</p>
+    </div>
+</a>
+
+    </div>
+
+    <!-- Script: Karte -->
+    <script>
+  const map = L.map('map', {
+    zoomControl: false,
+    scrollWheelZoom: false,   // ❗ wichtig
+    touchZoom: false,         // optional, verhindert pinch zoom
+    doubleClickZoom: false,   // optional
+    boxZoom: false,           // optional
+    keyboard: false           // optional
+}).setView([49.8913, 10.8860], 14);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+        const LAYER = {
+            s: L.circle([49.892, 10.886], { radius: 120, color: "#2563eb" }),
+            e: L.circle([49.891, 10.884], { radius: 120, color: "#dc2626" }),
+            sh: L.circle([49.8915, 10.8875], { radius: 120, color: "#d97706" }),
+            n: L.circle([49.908, 10.888], { radius: 120, color: "#16a34a" }),
+            m: L.circle([49.8928, 10.8885], { radius: 120, color: "#7c3aed" })
+        };
+
+        const visible = { s:false, e:false, sh:false, n:false, m:false };
+
+        function toggleLayer(key) {
+            if (visible[key]) map.removeLayer(LAYER[key]);
+            else LAYER[key].addTo(map);
+            visible[key] = !visible[key];
+        }
+    </script>
+
+</body>
+</html>

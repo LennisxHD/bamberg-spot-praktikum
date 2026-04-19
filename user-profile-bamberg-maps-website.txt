@@ -1,0 +1,9 @@
+-interaktive Karte Bamberg rechts 
+-links Feld für Optionen
+-Buttons zum draufdrücken
+-wenn ein button gedrückt wird verschiedene sachen auf der karte angezeigt   wird
+-Optionen: Wanderwege, essensmöglichkeiten, shoppingstores, Sehenswürdigkeiten, Unterkünfte, museen
+-wenn man etwas ausgewählt hat und auf der karte mit dem mauszeiger 2  
+ Sekunden drüber ist wird ein kleines fenster das Informationen zum            
+ essen/Unterkunft etc. enthält geöffnet
+-

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bamberg Spot - Interaktive Karte</title>
+
+  <!-- Mein CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <h2>🗺️ Bamberg Karte</h2>
+
+    <h3>Kategorien</h3>
+    <label><input type="checkbox" id="toggle-sehenswuerdigkeiten" checked> 🏛️ Sehenswürdigkeiten</label>
+    <label><input type="checkbox" id="toggle-museen" checked> 🖼️ Museen</label>
+    <label><input type="checkbox" id="toggle-essen" checked> 🍽️ Essen &amp; Trinken</label>
+    <label><input type="checkbox" id="toggle-natur" checked> 🌳 Natur</label>
+    <label><input type="checkbox" id="toggle-shops" checked> 🛍️ Shops</label>
+    
+    <label><input type="checkbox" id="toggle-brauereien" checked> 🍺 Brauereien</label>
+    <label><input type="checkbox" id="toggle-aussicht" checked> 📸 Aussichtspunkte</label>
+    <label><input type="checkbox" id="toggle-kirchen" checked> ⛪ Kirchen</label>
+    <label><input type="checkbox" id="toggle-tipps" checked> ⭐ Geheimtipps</label>
+    <label><input type="checkbox" id="toggle-tiere" checked> 🐾 Tiere & Beobachtung</label>
+
+    <button id="toggle-all-categories" class="cat-toggle-btn">
+        🔄 Alle Kategorien ausblenden
+    </button>
+
+    <h3>Kartenstil</h3>
+    <select id="basemap-select">
+      <option value="osm">OpenStreetMap Standard</option>
+      <option value="carto-light">Carto Light</option>
+      <option value="carto-dark">Carto Dark</option>
+      <option value="stadia-outdoors" selected>Stadia Outdoors</option>
+    </select>
+
+    <h3>Suche</h3>
+    <input id="search-input" type="text" placeholder="z. B. Dom, Müller, Aussicht …" autocomplete="off" />
+    <button id="search-btn" type="button">Suchen</button>
+    <ul id="search-results"></ul>
+
+    <h3>Favoriten</h3>
+    <label id="toggle-favorites-label">
+      <input type="checkbox" id="toggle-favorites">
+      <span id="favorites-text">Favoriten einblenden</span>
+    </label>
+
+    <ul id="favorites-list"></ul>
+
+    <div class="legend">
+      <div><span class="leg sw"></span> 🏛️ Sehenswürdigkeiten</div>
+      <div><span class="leg mu"></span> 🖼️ Museen</div>
+      <div><span class="leg es"></span> 🍽️ Essen &amp; Trinken</div>
+      <div><span class="leg na"></span> 🌳 Natur</div>
+      <div><span class="leg sh"></span> 🛍️ Shops</div>
+
+      <div><span class="leg br"></span> 🍺 Brauereien</div>
+      <div><span class="leg au"></span> 📸 Aussichtspunkte</div>
+      <div><span class="leg ki"></span> ⛪ Kirchen</div>
+      <div><span class="leg gt"></span> ⭐ Geheimtipps</div>
+      <div><span class="leg ti"></span> 🐾 Tiere & Beobachtung</div>
+    </div>
+  </div>
+
+    <button id="sidebar-toggle" aria-label="Sidebar umschalten" tabindex="0">
+       ☰
+    </button>
+
+    <button id="home-btn" onclick="window.location.href='start.html'">
+    ⟵ Startseite
+    </button>
+
+  <!-- Karte -->
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Meine Logik -->
+  <script src="main.js"></script>
+
+</body>
+</html>

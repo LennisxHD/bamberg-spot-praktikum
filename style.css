@@ -1,0 +1,287 @@
+/* ========= OS-spezifische Themes ========= */
+
+/* Default (falls OS nicht erkannt) */
+:root {
+    --bg: #ffffff;
+    --text: #111;
+    --sidebar-bg: #f6f6f6;
+    --border: #ddd;
+}
+
+/* Windows Theme */
+html[data-os="windows"] {
+    --bg: #ffffff;
+    --text: #111;
+    --sidebar-bg: #f0f0f0;
+    --border: #cccccc;
+}
+
+/* macOS Theme */
+html[data-os="macos"] {
+    --bg: #f4f4f7;
+    --text: #0d0d0d;
+    --sidebar-bg: #e9e9ed;
+    --border: #bfbfc4;
+}
+
+/* Linux Theme */
+html[data-os="linux"] {
+    --bg: #fcfcfc;
+    --text: #101010;
+    --sidebar-bg: #efefef;
+    --border: #cfcfcf;
+}
+
+/* Android Theme */
+html[data-os="android"] {
+    --bg: #fafafa;
+    --text: #222;
+    --sidebar-bg: #f0f0f0;
+    --border: #ccc;
+}
+
+/* iOS Theme */
+html[data-os="ios"] {
+    --bg: #ffffff;
+    --text: #000;
+    --sidebar-bg: #f2f2f7;
+    --border: #c8c7cc;
+}
+
+/* System Dark Mode */
+@media (prefers-color-scheme: dark) {
+    html[data-os] {
+        --bg: #1a1a1a;
+        --text: #eaeaea;
+        --sidebar-bg: #2a2a2a;
+        --border: #444444;
+    }
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+#sidebar {
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+}
+
+#search-results {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+/* globale Anwendung */
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+#sidebar {
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+}
+#search-results {
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+/* Layout */
+body {
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Karte sichtbar machen */
+#map {
+    position: absolute;
+    top: 0;
+    left: 320px;
+    right: 0;
+    bottom: 0;
+}
+
+/* Wenn Sidebar eingeklappt ist */
+#sidebar.collapsed ~ #map {
+    left: 0;
+}
+
+
+select,
+select option {
+    cursor: pointer;
+}
+
+
+/* Sidebar */
+#sidebar {
+    width: 320px;
+    background: var(--sidebar-bg);
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 5000;
+
+    transform: translateX(0);
+    transition: transform 0.35s ease;
+}
+
+/* eingeklappt */
+#sidebar.collapsed {
+    transform: translateX(-320px);
+}
+#sidebar-toggle {
+    position: fixed;
+    top: 50%;
+    left: 320px;
+    transform: translateY(-50%);
+    z-index: 9999;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    transition: left 0.35s ease;
+}
+
+/* Wenn Sidebar zugeklappt ist -> Button am linken Rand */
+#sidebar.collapsed ~ #sidebar-toggle {
+    left: 0px;
+}
+
+#sidebar h2 { margin: 0 0 12px; }
+#sidebar h3 { margin: 18px 0 8px; }
+#sidebar label { display:flex; align-items:center; gap:6px; margin:4px 0; }
+#sidebar input[type="checkbox"] { position:relative; top:0; margin:0; }
+
+#sidebar label {
+    cursor: pointer;
+}
+
+/* Suche */
+#search-results {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  display: none;
+}
+#search-results li {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+#search-results li:hover { background: #f0f0f0; }
+
+/* Popup-Bilder */
+.poi-img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+/* Titel & Links */
+.poi-title { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+.poi-link { color: #2563eb; text-decoration: none; }
+.poi-link:hover { text-decoration: underline; }
+
+/* Pins */
+.poi-pin {
+  width: 24px; height: 24px;
+  background: var(--pin-color, #2563eb);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 1px rgba(0,0,0,.4);
+  position: relative;
+}
+
+.poi-pin::after {
+  content: "";
+  width: 8px; height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 8px; left: 8px;
+}
+
+.poi-pin.highlight {
+  box-shadow: 0 0 0 4px rgba(37,99,235,.5), 0 0 0 2px #fff;
+}
+
+/* Tooltip */
+.leaflet-tooltip.poi-tooltip {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.15);
+}
+
+/* Legende Farben */
+.legend { margin-top: 20px; }
+.legend .leg { display:inline-block;width:14px;height:14px;margin-right:6px;border-radius:3px; }
+.legend .sw { background:#2563eb; }
+.legend .mu { background:#7c3aed; }
+.legend .es { background:#dc2626; }
+.legend .na { background:#16a34a; }
+.legend .sh { background:#d97706; }
+
+.legend .br { background: #bbae25; }
+.legend .au { background: #5b5a5e; }
+.legend .ki { background: #812020; }
+.legend .gt { background: #ff00c3; }
+.legend .ti { background: #057152; }
+
+.cat-toggle-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    background: #e5e7eb;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cat-toggle-btn:hover {
+    background: #d1d5db;
+}
+
+/* Tastaturfokus sichtbar machen */
+:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* ----- Zur Startseite Button ----- */
+#home-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 10px 18px;
+    font-size: 16px;
+    background: white;
+    color: #2563eb;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    transition: 0.25s;
+}
+
+#home-btn:hover {
+    background: #e8e8e8;
+    transform: scale(1.05);
+}
